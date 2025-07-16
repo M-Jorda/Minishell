@@ -1,0 +1,139 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_integration                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jjorda <jjorda@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/16 23:10:00 by jjorda            #+#    #+#             */
+/*   Updated: 2025/07/16 22:31:05 by jjorda           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../../header/minishell.h"
+
+/**
+ * @brief Validate input before lexing
+ * 
+ * @param input Input string to validate
+ * @return int 0 if valid, -1 if invalid
+ */
+static int	ft_validate_input(char *input)
+{
+	if (!input || !*input)
+		return (0); // Empty input is valid
+	
+	// Check for balanced quotes
+	if (!ft_quotes_are_balanced(input))
+	{
+		ft_printerr("minishell: syntax error: unclosed quotes\n");
+		return (-1);
+	}
+	
+	return (0);
+}
+
+/**
+ * @brief Post-process token list after lexing
+ * 
+ * @param shell Shell structure
+ * @param token_list Token list to process
+ * @return int 0 on success, -1 on error
+ */
+static int	ft_post_process_tokens(t_shell *shell, t_list *token_list)
+{
+	// Step 1: Perform expansion
+	if (ft_expansion(shell, token_list) == -1)
+	{
+		ft_printerr("minishell: expansion error\n");
+		return (-1);
+	}
+	
+	// Step 2: Remove quotes
+	if (ft_process_quote_removal(token_list) == -1)
+	{
+		ft_printerr("minishell: quote removal error\n");
+		return (-1);
+	}
+	
+	return (0);
+}
+
+/**
+ * @brief Enhanced lexer with full Phase 3 functionality
+ * 
+ * @param input Input string to tokenize
+ * @param shell Shell structure
+ * @return t_list* Token list with expansion and quote processing
+ */
+t_list	*ft_lexer_with_expansion(char *input, t_shell *shell)
+{
+	t_list	*token_list;
+
+	// Validate input
+	if (ft_validate_input(input) == -1)
+		return (NULL);
+	
+	// Basic tokenization
+	token_list = ft_lexer(input, shell);
+	if (!token_list)
+		return (NULL);
+	
+	// Post-process tokens (expansion, quote removal)
+	if (ft_post_process_tokens(shell, token_list) == -1)
+	{
+		ft_free_token_list(token_list);
+		return (NULL);
+	}
+	
+	return (token_list);
+}
+
+/**
+ * @brief Test function comparing our lexer with expected bash behavior
+ * 
+ * @param test_input Input to test
+ * @param shell Shell structure
+ * @param expected_behavior Expected behavior description
+ */
+void	ft_test_bash_compatibility(char *test_input, t_shell *shell, 
+	char *expected_behavior)
+{
+	t_list	*tokens;
+
+	ft_printf("\n=== BASH COMPATIBILITY TEST ===\n");
+	ft_printf("Input: \"%s\"\n", test_input);
+	ft_printf("Expected: %s\n", expected_behavior);
+	
+	tokens = ft_lexer_with_expansion(test_input, shell);
+	if (tokens)
+	{
+		ft_printf("Result: ");
+		ft_print_token_list(tokens);
+		ft_free_token_list(tokens);
+	}
+	else
+	{
+		ft_printf("Result: ERROR (NULL)\n");
+	}
+}
+
+/**
+ * @brief Validate quotes before tokenization
+ * 
+ * @param input Input string
+ * @return int 0 if valid, error code if invalid
+ */
+int	ft_validate_quotes_syntax(char *input)
+{
+	if (!input)
+		return (0);
+	
+	if (!ft_quotes_are_balanced(input))
+	{
+		ft_printerr("minishell: syntax error: unclosed quotes\n");
+		return (2); // Syntax error code
+	}
+	
+	return (0);
+}

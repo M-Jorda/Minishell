@@ -29,7 +29,7 @@ MEM		= memory/ft_
 SRC_MEM	= $(MEM)calloc.c $(MEM)mallocfailed.c $(MEM)split_arg.c				\
 		$(MEM)split.c $(MEM)strdup.c $(MEM)strjoin.c $(MEM)leak.c			\
 		$(MEM)strmapi.c $(MEM)strtrim.c $(MEM)substr.c $(MEM)free_vctr.c	\
-		$(MEM)strjoin_f.c $(MEM)realloc.c
+		$(MEM)strjoin_f.c $(MEM)realloc.c $(MEM)free_arr.c
 
 PRT		= print/ft_
 PF		= $(PRT)printf/ft_

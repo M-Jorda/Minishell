@@ -6,7 +6,7 @@
 /*   By: jjorda <jjorda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:10:00 by jjorda            #+#    #+#             */
-/*   Updated: 2025/07/16 21:33:48 by jjorda           ###   ########.fr       */
+/*   Updated: 2025/07/16 22:15:59 by jjorda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,25 @@ t_token_type	ft_get_token_type(char *input, int pos);
 /* --------------------------- QUOTES HANDLER ------------------------------- */
 
 /**
+ * @brief Find closing quote in input
+ * 
+ * @param input Input string
+ * @param start_pos Starting position
+ * @param quote_char Quote character to match
+ * @return int Position of closing quote, -1 if not found
+ */
+int		ft_find_closing_quote(char *input, int start_pos, char quote_char);
+
+/**
  * @brief Handle single quotes
  * 
  * @param input Input string
  * @param pos Position pointer
  * @param token Token to fill
+ * @param shell Shell structure
  * @return int 0 on success, -1 on error
  */
-int		ft_handle_single_quotes(char *input, int *pos, t_token *token);
+int		ft_handle_single_quotes(char *input, int *pos, t_token *token, t_shell *shell);
 
 /**
  * @brief Handle double quotes
@@ -93,9 +104,10 @@ int		ft_handle_single_quotes(char *input, int *pos, t_token *token);
  * @param input Input string
  * @param pos Position pointer
  * @param token Token to fill
+ * @param shell Shell structure
  * @return int 0 on success, -1 on error
  */
-int		ft_handle_double_quotes(char *input, int *pos, t_token *token);
+int		ft_handle_double_quotes(char *input, int *pos, t_token *token, t_shell *shell);
 
 /**
  * @brief Check if quotes are balanced
@@ -104,6 +116,52 @@ int		ft_handle_double_quotes(char *input, int *pos, t_token *token);
  * @return bool true if balanced, false otherwise
  */
 bool	ft_quotes_are_balanced(char *input);
+
+/* ----------------------------- EXPANSION ---------------------------------- */
+
+/**
+ * @brief Main expansion function
+ * 
+ * @param shell Shell structure
+ * @param token_list Token list to expand
+ * @return int 0 on success, -1 on error
+ */
+int		ft_expansion(t_shell *shell, t_list *token_list);
+
+/**
+ * @brief Expand variables in double quotes
+ * 
+ * @param shell Shell structure
+ * @param input Content inside double quotes
+ * @return char* Expanded string
+ */
+char	*ft_expand_in_double_quotes(t_shell *shell, char *input);
+
+/**
+ * @brief Process variable expansion
+ * 
+ * @param shell Shell structure
+ * @param input Input string
+ * @return char* String with variables expanded
+ */
+char	*ft_process_var_expansion(t_shell *shell, char *input);
+
+/**
+ * @brief Process exit code expansion
+ * 
+ * @param shell Shell structure
+ * @param input Input string
+ * @return char* String with $? expanded
+ */
+char	*ft_process_exit_code_expansion(t_shell *shell, char *input);
+
+/**
+ * @brief Check if string contains variables
+ * 
+ * @param str String to check
+ * @return bool true if contains variables
+ */
+bool	ft_contains_variables(char *str);
 
 /* ----------------------------- LEXER UTILS -------------------------------- */
 

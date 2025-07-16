@@ -6,7 +6,7 @@
 /*   By: jjorda <jjorda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:00:00 by jjorda            #+#    #+#             */
-/*   Updated: 2025/07/16 22:15:03 by jjorda           ###   ########.fr       */
+/*   Updated: 2025/07/16 22:30:43 by jjorda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ bool	ft_quotes_are_balanced(char *input)
 	char	quote_char;
 	bool	in_quotes;
 
+	if (!input)
+		return (true);
 	i = 0;
 	in_quotes = false;
 	quote_char = 0;

@@ -6,7 +6,7 @@
 /*   By: jjorda <jjorda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:44:27 by jjorda            #+#    #+#             */
-/*   Updated: 2025/07/16 21:34:24 by jjorda           ###   ########.fr       */
+/*   Updated: 2025/07/16 22:33:13 by jjorda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "macro.h"
 # include "deployment/setup.h"
 # include "lexing.h"
+# include "expansion.h"
 # include "minishell_executor.h"
 # include "signals.h"
 # include "executor.h"
@@ -67,24 +68,6 @@ int		ft_execute_subshell(t_ast_node *content, t_env *parent_env);
 t_list	*ft_find_matching_paren(t_list *start);
 
 /**
- * @brief Validates parentheses syntax
- * 
- * @param token_h Token list head
- * @return bool true if valid, false otherwise
- */
-// bool	ft_validate_parentheses(t_list *token_h);
-
-/**
- * @brief Parses a group (parentheses)
- * 
- * @param shell Shell structure
- * @param start Opening parenthesis token
- * @param end Closing parenthesis token
- * @return t_ast_node* Group AST node
- */
-// t_ast_node	*ft_parse_group(t_shell *shell, t_list *start, t_list *end);
-
-/**
  * @brief Expands wildcards in token list
  * 
  * @param shell Shell structure
@@ -130,5 +113,33 @@ t_ast_node	*ft_create_group_node(t_ast_node *content);
  * @return int 0 on success, -1 on error
  */
 int			ft_parse_redirections(t_shell *shell, t_list *token_h, t_command *cmd);
+
+/* ----------------------------- INTEGRATION -------------------------------- */
+
+/**
+ * @brief Enhanced lexer with full Phase 3 functionality
+ * 
+ * @param input Input string to tokenize
+ * @param shell Shell structure
+ * @return t_list* Token list with expansion and quote processing
+ */
+t_list		*ft_lexer_with_expansion(char *input, t_shell *shell);
+
+/**
+ * @brief Validate quotes syntax
+ * 
+ * @param input Input string
+ * @return int 0 if valid, error code if invalid
+ */
+int			ft_validate_quotes_syntax(char *input);
+
+/**
+ * @brief Helper function for string search
+ * 
+ * @param haystack String to search in
+ * @param needle String to search for
+ * @return char* Pointer to first occurrence, NULL if not found
+ */
+char		*ft_strstr(const char *haystack, const char *needle);
 
 #endif
