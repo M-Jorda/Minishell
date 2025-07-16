@@ -6,7 +6,7 @@
 /*   By: jjorda <jjorda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:44:27 by jjorda            #+#    #+#             */
-/*   Updated: 2025/07/16 19:44:19 by jjorda           ###   ########.fr       */
+/*   Updated: 2025/07/16 21:34:24 by jjorda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "struct.h"
 # include "macro.h"
 # include "deployment/setup.h"
+# include "lexing.h"
 # include "minishell_executor.h"
 # include "signals.h"
 # include "executor.h"
